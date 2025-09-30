@@ -119,18 +119,55 @@ textarea {
   color: var(--text-strong);
 }
 
-.list li .title.editable {
+.list li .editor-input {
   border: none;
   background: rgba(255, 255, 255, 0.55);
   padding: 10px 12px;
   border-radius: 12px;
   transition: box-shadow 0.15s ease, background 0.15s ease;
+  font: inherit;
+  color: inherit;
 }
 
-.list li .title.editable:focus {
+.list li .editor-input:focus {
   outline: none;
   background: #fff;
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 28%, transparent);
+}
+
+.list li .meta-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.list li .meta-line.editors {
+  align-items: stretch;
+  gap: 16px;
+}
+
+.list li .priority-select {
+  min-width: 180px;
+}
+
+.list li .due-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 180px;
+}
+
+.list li .priority-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 200px;
+}
+
+.list li .desc.editable {
+  min-height: 90px;
+  resize: vertical;
 }
 
 .list li.done {

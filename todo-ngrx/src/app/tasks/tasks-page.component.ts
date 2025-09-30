@@ -47,6 +47,24 @@ export class TasksPageComponent {
   del(id: string)    { this.store.dispatch(A.removeTask({ id })); }
   upd(id: string, changes: any) { this.store.dispatch(A.updateTask({ id, changes })); }
 
+  changePriority(id: string, event: Event) {
+    const value = Number((event.target as HTMLSelectElement).value);
+    if (value >= 1 && value <= 5) {
+      this.upd(id, { priority: value as 1 | 2 | 3 | 4 | 5 });
+    }
+  }
+
+  changeDueDate(id: string, event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.upd(id, { dueDate: value || undefined });
+  }
+
+  changeDescription(id: string, event: Event) {
+    const raw = (event.target as HTMLTextAreaElement).value;
+    const trimmed = raw.trim();
+    this.upd(id, { description: trimmed ? raw : undefined });
+  }
+
   toggleDoneVisibility() { this.showDone = !this.showDone; }
 
   trackByTaskId(_: number, task: { id: string }) { return task.id; }
