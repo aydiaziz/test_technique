@@ -1,29 +1,49 @@
-.wrap { max-width: 900px; margin: 24px auto; padding: 0 16px; }
+.wrap { max-width: 900px; margin: 24px auto; padding: 0 16px 48px; }
 
 .card {
   border: 1px solid #e5e7eb;
   padding: 16px;
   border-radius: 12px;
   display: grid;
-  gap: 8px;
+  gap: 16px;
   background: #fff;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.05);
 }
 
 .row {
   display: grid;
-  grid-template-columns: 1fr 100px 160px;
-  gap: 8px;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 16px;
+  flex-wrap: wrap;
 }
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+label { font-weight: 600; color: #374151; }
 
 input, select, textarea, button {
   border: 1px solid #e5e7eb;
   border-radius: 8px;
-  padding: 8px;
+  padding: 10px 12px;
+  font-size: 0.95rem;
 }
 
-textarea { min-height: 70px; }
+textarea { min-height: 90px; resize: vertical; }
 
-.meta { color: #6b7280; font-size: .9rem; margin: 12px 0; }
+.error {
+  color: #b91c1c;
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.meta { color: #6b7280; font-size: .9rem; }
+
+.list-section + .list-section { margin-top: 32px; }
 
 h2 { margin-top: 16px; font-size: 1.1rem; }
 
@@ -31,15 +51,32 @@ h2 { margin-top: 16px; font-size: 1.1rem; }
 
 .list li {
   display: grid;
-  grid-template-columns: 22px 1fr 110px;
-  gap: 8px;
-  align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px dashed #eee;
+  grid-template-columns: 24px 1fr auto;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px dashed #e5e7eb;
 }
 
-.list li .title { width: 100%; }
+.list li:last-child { border-bottom: none; }
+
+.list li .title { width: 100%; font-weight: 600; font-size: 1rem; }
+
+.list li .title.editable {
+  border: none;
+  background: #f9fafb;
+  padding: 8px 12px;
+}
+
+.list li .title.editable:focus {
+  outline: 2px solid #6366f1;
+  background: #fff;
+}
 
 .list li.done .title { text-decoration: line-through; opacity: .7; }
 
-button.del { background: #fee2e2; border-color: #fecaca; }
+@media (max-width: 768px) {
+  .row { grid-template-columns: 1fr; }
+  .list li { grid-template-columns: 24px 1fr; }
+  .list li .del { justify-self: flex-end; }
+}
