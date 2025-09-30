@@ -1,41 +1,98 @@
-<section class="wrap">
+<section class="wrap tasks-page">
   <h1>Mes tâches</h1>
 
   <form class="card" [formGroup]="f" (ngSubmit)="add()">
     <div class="row">
-      <input placeholder="Titre *" formControlName="title" />
-      <select formControlName="priority">
-        <option [ngValue]="1">P1</option>
-        <option [ngValue]="2">P2</option>
-        <option [ngValue]="3">P3</option>
-        <option [ngValue]="4">P4</option>
-        <option [ngValue]="5">P5</option>
-      </select>
-      <input type="date" formControlName="dueDate" />
+      <div class="field-group">
+        <label for="title">Titre *</label>
+        <input id="title" placeholder="Ajouter un titre" formControlName="title" />
+        <p class="error" *ngIf="titleHasError">Le titre doit contenir au moins 2 caractères.</p>
+      </div>
+      <div class="field-group">
+        <label for="priority">Priorité</label>
+        <select id="priority" formControlName="priority">
+          <option [ngValue]="1">P1 - Critique</option>
+          <option [ngValue]="2">P2 - Haute</option>
+          <option [ngValue]="3">P3 - Normale</option>
+          <option [ngValue]="4">P4 - Basse</option>
+          <option [ngValue]="5">P5 - Très basse</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label for="dueDate">Échéance</label>
+        <input id="dueDate" type="date" formControlName="dueDate" />
+      </div>
     </div>
-    <textarea placeholder="Description" formControlName="description"></textarea>
-    <button type="submit" [disabled]="f.invalid">Ajouter</button>
+    <label class="field-group">
+      <span>Description</span>
+      <textarea placeholder="Détails (facultatif)" formControlName="description"></textarea>
+    </label>
+    <button type="submit" [disabled]="f.invalid">Ajouter la tâche</button>
   </form>
 
-  <div class="meta" *ngIf="counts$ | async as c">
-    {{ c.done }} / {{ c.total }} terminées
+  <div class="toolbar" *ngIf="counts$ | async as c">
+    <div class="meta" aria-live="polite">{{ c.done }} / {{ c.total }} terminées</div>
+    <button type="button" class="toggle-done" (click)="toggleDoneVisibility()">
+      {{ showDone ? 'Masquer les terminées' : 'Afficher les terminées' }}
+    </button>
   </div>
 
-  <h2>À faire</h2>
-  <ul class="list">
-    <li *ngFor="let t of (open$ | async)" [class.done]="t.completed">
-      <input type="checkbox" [checked]="t.completed" (change)="toggle(t.id)" />
-      <input class="title" [value]="t.title" (change)="upd(t.id, { title: $any($event.target).value })" />
-      <button class="del" (click)="del(t.id)">Supprimer</button>
-    </li>
-  </ul>
+  <section class="list-section">
+    <header>
+      <h2>À faire</h2>
+    </header>
+    <ng-container *ngIf="(open$ | async) as open">
+      <div class="empty-state" *ngIf="open.length === 0">
+        Vous êtes à jour, aucune tâche en cours.
+      </div>
+      <ul class="list" *ngIf="open.length > 0">
+        <li *ngFor="let t of open; trackBy: trackByTaskId" [class.done]="t.completed">
+          <input type="checkbox" [checked]="t.completed" (change)="toggle(t.id)" [attr.aria-label]="'Marquer ' + t.title + ' comme terminée'" />
+          <div class="content">
+            <input class="title editable" [value]="t.title" (change)="upd(t.id, { title: $any($event.target).value })" />
+            <div class="meta-line">
+              <span class="badge priority" [ngClass]="'p' + t.priority">{{ priorityLabel(t.priority) }}</span>
+              <span class="badge due" *ngIf="t.dueDate" [ngClass]="dueClass(t.dueDate)">
+                {{ dueLabel(t.dueDate) }}
+              </span>
+            </div>
+            <p class="desc" *ngIf="t.description">{{ t.description }}</p>
+          </div>
+          <button class="del" (click)="del(t.id)" [attr.aria-label]="'Supprimer ' + t.title">Supprimer</button>
+        </li>
+      </ul>
+    </ng-container>
+  </section>
 
-  <h2>Terminées</h2>
-  <ul class="list">
-    <li *ngFor="let t of (done$ | async)" class="done">
-      <input type="checkbox" [checked]="true" (change)="toggle(t.id)" />
-      <span class="title">{{ t.title }}</span>
-      <button class="del" (click)="del(t.id)">Supprimer</button>
-    </li>
-  </ul>
+  <section class="list-section" *ngIf="showDone">
+    <header>
+      <h2>Terminées</h2>
+    </header>
+    <ng-container *ngIf="(done$ | async) as done">
+      <div class="empty-state" *ngIf="done.length === 0">
+        Aucune tâche terminée pour le moment.
+      </div>
+      <ul class="list" *ngIf="done.length > 0">
+        <li *ngFor="let t of done; trackBy: trackByTaskId" class="done">
+          <input
+            type="checkbox"
+            [checked]="true"
+            (change)="toggle(t.id)"
+            [attr.aria-label]="'Réactiver ' + t.title"
+          />
+          <div class="content">
+            <span class="title">{{ t.title }}</span>
+            <div class="meta-line">
+              <span class="badge priority" [ngClass]="'p' + t.priority">{{ priorityLabel(t.priority) }}</span>
+              <span class="badge due" *ngIf="t.dueDate" [ngClass]="dueClass(t.dueDate)">
+                {{ dueLabel(t.dueDate) }}
+              </span>
+            </div>
+            <p class="desc" *ngIf="t.description">{{ t.description }}</p>
+          </div>
+          <button class="del" (click)="del(t.id)" [attr.aria-label]="'Supprimer ' + t.title">Supprimer</button>
+        </li>
+      </ul>
+    </ng-container>
+  </section>
 </section>
