@@ -4,9 +4,25 @@ import * as A from './tasks.actions';
 import { Task, newId } from './tasks.models';
 
 export type TasksState = EntityState<Task>;
+const dueDateValue = (dueDate?: string) => {
+  if (!dueDate) return Number.POSITIVE_INFINITY;
+  const time = new Date(dueDate).getTime();
+  return Number.isNaN(time) ? Number.POSITIVE_INFINITY : time;
+};
+
+const compareTasks = (a: Task, b: Task) => {
+  const dueA = dueDateValue(a.dueDate);
+  const dueB = dueDateValue(b.dueDate);
+  if (dueA !== dueB) return dueA < dueB ? -1 : 1;
+
+  if (a.priority !== b.priority) return a.priority - b.priority;
+
+  return a.createdAt.localeCompare(b.createdAt);
+};
+
 const adapter = createEntityAdapter<Task>({
   selectId: t => t.id,
-  sortComparer: (a,b) => a.createdAt.localeCompare(b.createdAt),
+  sortComparer: compareTasks,
 });
 const initialState: TasksState = adapter.getInitialState();
 
