@@ -1,5 +1,32 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  padding: clamp(16px, 4vw, 32px) 0 64px;
+}
+
 .container {
-  max-width: 900px;
-  margin: 24px auto;
-  padding: 0 16px;
+  width: min(960px, calc(100% - clamp(32px, 6vw, 80px)));
+  margin: 0 auto;
+  padding: clamp(24px, 5vw, 48px);
+  background: var(--surface);
+  border-radius: 28px;
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.18), transparent 55%);
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+.container > * {
+  position: relative;
+  z-index: 1;
 }
