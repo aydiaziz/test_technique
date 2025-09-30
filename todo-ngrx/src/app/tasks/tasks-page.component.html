@@ -61,11 +61,11 @@
                   [value]="t.priority"
                   (change)="changePriority(t.id, $event)"
                 >
-                  <option [ngValue]="1">P1 - Critique</option>
-                  <option [ngValue]="2">P2 - Haute</option>
-                  <option [ngValue]="3">P3 - Normale</option>
-                  <option [ngValue]="4">P4 - Basse</option>
-                  <option [ngValue]="5">P5 - Très basse</option>
+                  <option value="1">P1 - Critique</option>
+                  <option value="2">P2 - Haute</option>
+                  <option value="3">P3 - Normale</option>
+                  <option value="4">P4 - Basse</option>
+                  <option value="5">P5 - Très basse</option>
                 </select>
                 <span class="badge priority" [ngClass]="'p' + t.priority">{{ priorityLabel(t.priority) }}</span>
               </div>

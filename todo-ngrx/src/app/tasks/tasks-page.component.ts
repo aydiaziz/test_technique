@@ -48,7 +48,9 @@ export class TasksPageComponent {
   upd(id: string, changes: any) { this.store.dispatch(A.updateTask({ id, changes })); }
 
   changePriority(id: string, event: Event) {
-    const value = Number((event.target as HTMLSelectElement).value);
+    const target = event.target as HTMLSelectElement | null;
+    if (!target) return;
+    const value = Number.parseInt(target.value, 10);
     if (value >= 1 && value <= 5) {
       this.upd(id, { priority: value as 1 | 2 | 3 | 4 | 5 });
     }
