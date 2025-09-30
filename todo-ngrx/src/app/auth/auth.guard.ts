@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { selectIsAuthenticated } from './state/auth.selectors';
 import { map } from 'rxjs/operators';
 
-export const authGuard: CanActivateFn = () => {
+export const authGuard: CanActivateFn = () =>{
   const store = inject(Store);
   const router = inject(Router);
   return store.select(selectIsAuthenticated).pipe(
