@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { logout } from '../../auth/state/auth.actions';
 import { selectEmail, selectIsAuthenticated } from '../../auth/state/auth.selectors';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -15,6 +15,9 @@ import { RouterLink } from '@angular/router';
 export class HeaderComponent {
   email$ = this.store.select(selectEmail);
   isAuthed$ = this.store.select(selectIsAuthenticated);
-  constructor(private store: Store) {}
-  onLogout(){ this.store.dispatch(logout()); }
+  constructor(private store: Store, private router: Router) {}
+  onLogout(){
+    this.store.dispatch(logout());
+    this.router.navigate(['/login']);
+  }
 }
