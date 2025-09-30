@@ -49,14 +49,44 @@
         <li *ngFor="let t of open; trackBy: trackByTaskId" [class.done]="t.completed">
           <input type="checkbox" [checked]="t.completed" (change)="toggle(t.id)" [attr.aria-label]="'Marquer ' + t.title + ' comme terminée'" />
           <div class="content">
-            <input class="title editable" [value]="t.title" (change)="upd(t.id, { title: $any($event.target).value })" />
-            <div class="meta-line">
-              <span class="badge priority" [ngClass]="'p' + t.priority">{{ priorityLabel(t.priority) }}</span>
-              <span class="badge due" *ngIf="t.dueDate" [ngClass]="dueClass(t.dueDate)">
-                {{ dueLabel(t.dueDate) }}
-              </span>
+            <input
+              class="title editable editor-input"
+              [value]="t.title"
+              (change)="upd(t.id, { title: $any($event.target).value })"
+            />
+            <div class="meta-line editors">
+              <div class="priority-editor">
+                <select
+                  class="editor-input priority-select"
+                  [value]="t.priority"
+                  (change)="changePriority(t.id, $event)"
+                >
+                  <option [ngValue]="1">P1 - Critique</option>
+                  <option [ngValue]="2">P2 - Haute</option>
+                  <option [ngValue]="3">P3 - Normale</option>
+                  <option [ngValue]="4">P4 - Basse</option>
+                  <option [ngValue]="5">P5 - Très basse</option>
+                </select>
+                <span class="badge priority" [ngClass]="'p' + t.priority">{{ priorityLabel(t.priority) }}</span>
+              </div>
+              <div class="due-editor">
+                <input
+                  class="editor-input"
+                  type="date"
+                  [value]="t.dueDate ?? ''"
+                  (change)="changeDueDate(t.id, $event)"
+                />
+                <span class="badge due" *ngIf="t.dueDate" [ngClass]="dueClass(t.dueDate)">
+                  {{ dueLabel(t.dueDate) }}
+                </span>
+              </div>
             </div>
-            <p class="desc" *ngIf="t.description">{{ t.description }}</p>
+            <textarea
+              class="desc editable editor-input"
+              [value]="t.description || ''"
+              placeholder="Ajouter une description"
+              (change)="changeDescription(t.id, $event)"
+            ></textarea>
           </div>
           <button class="del" (click)="del(t.id)" [attr.aria-label]="'Supprimer ' + t.title">Supprimer</button>
         </li>
