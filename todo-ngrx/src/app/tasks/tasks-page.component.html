@@ -1,0 +1,41 @@
+<section class="wrap">
+  <h1>Mes tâches</h1>
+
+  <form class="card" [formGroup]="f" (ngSubmit)="add()">
+    <div class="row">
+      <input placeholder="Titre *" formControlName="title" />
+      <select formControlName="priority">
+        <option [ngValue]="1">P1</option>
+        <option [ngValue]="2">P2</option>
+        <option [ngValue]="3">P3</option>
+        <option [ngValue]="4">P4</option>
+        <option [ngValue]="5">P5</option>
+      </select>
+      <input type="date" formControlName="dueDate" />
+    </div>
+    <textarea placeholder="Description" formControlName="description"></textarea>
+    <button type="submit" [disabled]="f.invalid">Ajouter</button>
+  </form>
+
+  <div class="meta" *ngIf="counts$ | async as c">
+    {{ c.done }} / {{ c.total }} terminées
+  </div>
+
+  <h2>À faire</h2>
+  <ul class="list">
+    <li *ngFor="let t of (open$ | async)" [class.done]="t.completed">
+      <input type="checkbox" [checked]="t.completed" (change)="toggle(t.id)" />
+      <input class="title" [value]="t.title" (change)="upd(t.id, { title: $any($event.target).value })" />
+      <button class="del" (click)="del(t.id)">Supprimer</button>
+    </li>
+  </ul>
+
+  <h2>Terminées</h2>
+  <ul class="list">
+    <li *ngFor="let t of (done$ | async)" class="done">
+      <input type="checkbox" [checked]="true" (change)="toggle(t.id)" />
+      <span class="title">{{ t.title }}</span>
+      <button class="del" (click)="del(t.id)">Supprimer</button>
+    </li>
+  </ul>
+</section>

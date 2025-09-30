@@ -1,0 +1,12 @@
+<section class="card">
+  <h1>Connexion</h1>
+  <form [formGroup]="f" (ngSubmit)="submit()">
+    <label>Email</label>
+    <input type="email" formControlName="email" placeholder="you@example.com" />
+    <div class="error" *ngIf="f.controls.email.touched && f.controls.email.invalid">
+      Email valide requis
+    </div>
+    <button type="submit" [disabled]="f.invalid">Entrer</button>
+  </form>
+  <p class="hint">Connexion mock. Saisis uniquement un email.</p>
+</section>

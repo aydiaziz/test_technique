@@ -1,0 +1,11 @@
+<header class="hdr">
+  <a class="logo" routerLink="/">ToDo NgRx</a>
+  <div class="spacer"></div>
+  <ng-container *ngIf="isAuthed$ | async; else guest">
+    <span class="email">{{ email$ | async }}</span>
+    <button (click)="onLogout()">Déconnexion</button>
+  </ng-container>
+  <ng-template #guest>
+    <a routerLink="/login">Login</a>
+  </ng-template>
+</header>

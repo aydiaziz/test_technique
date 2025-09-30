@@ -1,0 +1,45 @@
+.wrap { max-width: 900px; margin: 24px auto; padding: 0 16px; }
+
+.card {
+  border: 1px solid #e5e7eb;
+  padding: 16px;
+  border-radius: 12px;
+  display: grid;
+  gap: 8px;
+  background: #fff;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 100px 160px;
+  gap: 8px;
+}
+
+input, select, textarea, button {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+textarea { min-height: 70px; }
+
+.meta { color: #6b7280; font-size: .9rem; margin: 12px 0; }
+
+h2 { margin-top: 16px; font-size: 1.1rem; }
+
+.list { list-style: none; padding: 0; margin: 8px 0; }
+
+.list li {
+  display: grid;
+  grid-template-columns: 22px 1fr 110px;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px dashed #eee;
+}
+
+.list li .title { width: 100%; }
+
+.list li.done .title { text-decoration: line-through; opacity: .7; }
+
+button.del { background: #fee2e2; border-color: #fecaca; }
